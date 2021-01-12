@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request, redirect, url_for, flash
 from flask_mysqldb import MySQL
+from helper import validator
 
 #----------------------------------------->
 
@@ -15,43 +16,93 @@ dataBase = MySQL( app )
 
 ################################################################
 
+app.secret_key = "mysecretekey"
+
+################################################################
+
 @app.route( "/" )
 
 def index():
-    return render_template( "index.html" )
+
+    cursor = dataBase.connection.cursor()
+    cursor.execute( "SELECT * FROM contacts" )
+    response = cursor.fetchall()
+
+    return render_template( "index.html", contacts = response )
 
 ################################################################
 
 @app.route( "/add_contact", methods = [ 'POST' ] )
 
 def addContact():
+
     if request.method == "POST":
 
         fullName = request.form[ "fullname" ]
         phone    = request.form[ "phone" ]
         email    = request.form[ "email" ]
 
-        cursor   = dataBase.connection.cursor()
+        if validator.validatorForm( { fullName, phone, email } ) == False:
+            flash( "All info is required" )
+            return redirect( url_for( "index" ) )
+
+        if validator.emailValidator( email ) == False:
+            flash( "Valid email is required" )
+            return redirect( url_for( "index" ) )
+
+
+        cursor = dataBase.connection.cursor()
         cursor.execute( "INSERT INTO contacts ( fullname, phone, email ) VALUES ( %s, %s, %s )", ( fullName, phone, email ) )
         dataBase.connection.commit()
 
-        flash( "Created" )
+
+        flash( "Created successfuly" )
         return redirect( url_for( "index" ) )
         # dispara la funcion de la ruta
 
 ##################################################################
 
-@app.route( "/edit_contact" )
+@app.route( "/get_contact/<string:contactId>" )
 
-def editContact():
-    return "edit screen"
+def editContact( contactId ):
+    
+    cursor = dataBase.connection.cursor()
+    cursor.execute( "SELECT * FROM contacts WHERE id = %s",( contactId ) )
+    response = cursor.fetchall()
+
+    return render_template( "update.html", contact = response )
+
+#-----------------------------------------------------------------
+
+@app.route( "/update_contact/<string:contactId>", methods = [ 'POST' ] )
+
+def updateContact( contactId ):
+
+    if request.method == "POST":
+
+        fullName = request.form[ "fullname" ]
+        phone    = request.form[ "phone" ]
+        email    = request.form[ "email" ]
+
+        cursor = dataBase.connection.cursor()
+        cursor.execute( "UPDATE contacts SET fullname = %s, phone = %s, email = %s WHERE id = %s",( fullName, phone, email, contactId ) )
+        dataBase.connection.commit()  
+
+        flash( "Updated successfuly" )
+        return redirect( url_for( "index" ) )
 
 ################################################################
 
-@app.route( "/delete_contact" )
+@app.route( "/delete_contact/<string:id>" )
 
-def deleteContact():
-    return "delete screen"
+def deleteContact( id ):
+
+    cursor = dataBase.connection.cursor()
+    cursor.execute( "DELETE FROM contacts WHERE id = {0}".format( id ) )
+    dataBase.connection.commit()
+
+    flash( "Deleted successfuly" )
+    return redirect( url_for( "index" ) )
 
 ################################################################
 

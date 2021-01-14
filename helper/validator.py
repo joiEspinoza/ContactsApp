@@ -4,6 +4,7 @@ def validatorForm( formValues = {} ):
     for value in formValues:
 
         if value == "":
+
             return False
         
            

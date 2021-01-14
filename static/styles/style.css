@@ -11,3 +11,16 @@ html, body
 {
     margin-left: 83%;
 }
+
+.card-head
+{
+    padding: 5px !important;
+    text-align: center;
+    color: #0f0c29;
+}
+
+.closeX
+{
+    cursor: pointer;
+    margin-left: 5px !important;
+}

@@ -5,26 +5,38 @@
 
         {% for data in contact %}
 
-            <form action="/update_contact/{{ data.0 }}" method="POST">
+        <div class="card">
 
-                <div class="form-group">
-                    <input class="form-control" type="text" name="fullname" value="{{ data.1 }}" />
-                </div>
+            <div class="card-head mt-3">
+                <h2>UPDATE CONTACT</h2>
+            </div>
 
-                <div class="form-group">
-                    <input class="form-control" type="text" name="phone" value="{{ data.2 }}" />
-                </div>
+            <div class="card-body">
 
-                <div class="form-group">
-                    <input class="form-control" type="email" name="email" value="{{ data.3 }}" />
-                </div>
+                <form action="/update_contact/{{ data.0 }}" method="POST">
 
-                <div class="form-group">
-                    <button class="form-control btn btn-primary" type="submit">Update</button>
-                </div>
+                    <div class="form-group">
+                        <input class="form-control" type="text" name="fullname" autocomplete="off" value="{{ data.1 }}" />
+                    </div>
 
-            </form>
-        
+                    <div class="form-group">
+                        <input class="form-control" type="text" name="phone" autocomplete="off" value="{{ data.2 }}" />
+                    </div>
+
+                    <div class="form-group">
+                        <input class="form-control" type="email" name="email" autocomplete="off" value="{{ data.3 }}" />
+                    </div>
+
+                    <div class="form-group">
+                        <button class="form-control btn btn-primary" type="submit">Update</button>
+                    </div>
+
+                </form>
+
+            </div>
+
+        </div>
+
         {% endfor %}
 
     {% endblock %}

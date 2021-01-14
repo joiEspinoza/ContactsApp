@@ -9,12 +9,12 @@
 
                 {% for msg in msgs %}
 
-                  
-                <div class="alert alert-warning alert-dismissible fade show" role="alert">
+        
+                <div class="alert alert-primary alert-dismissible fade show" role="alert">
 
-                    {{  msg  }}
-                    <button type="button" class="btn btn-primary btnAlertClose" data-bs-dismiss="alert" aria-label="Close">X</button>
-                    
+                    <span>{{  msg  }}</span>
+                    <span class="closeX" ><i class="fas fa-times-circle" data-bs-dismiss="alert" aria-label="Close"></i></span>
+
                 </div>
 
                 {% endfor %}
@@ -23,28 +23,41 @@
 
         {% endwith %}
 
-        <form action="/add_contact" method="POST">
+        <div class="card">
 
-            <div class="form-group">
-                <input class="form-control" type="text" name="fullname" placeholder="Full Name" autocomplete="off" />
+            <div class="card-head mt-3">
+                <h2>ADD CONTACT</h2>
             </div>
 
-            <div class="form-group">
-               <input type="text" class="form-control" name="phone" placeholder="Phone" autocomplete="off" /> 
+            <div class="card-body">
+
+                <form action="/add_contact" method="POST">
+
+                    <div class="form-group">
+                        <input class="form-control" type="text" name="fullname" placeholder="Full Name" autocomplete="off" />
+                    </div>
+        
+                    <div class="form-group">
+                       <input type="text" class="form-control" name="phone" placeholder="Phone" autocomplete="off" /> 
+                    </div>
+        
+                    <div class="form-group">
+                         <input type="email" class="form-control" name="email" placeholder="Email" autocomplete="off" />
+                    </div>
+        
+                    <div class="form-group">
+                         <button class="form-control btn btn-primary" type="submit"><i class="fas fa-plus"></i></button>
+                    </div>
+        
+        
+                </form>
+           
             </div>
 
-            <div class="form-group">
-                 <input type="email" class="form-control" name="email" placeholder="Email" autocomplete="off" />
-            </div>
+        </div>
+     
 
-            <div class="form-group">
-                 <button class="form-control btn btn-primary" type="submit">Add</button>
-            </div>
-
-
-        </form>
-
-        <table class="table table-hover table-dark">
+        <table class="table table-hover table-dark mt-5">
 
             <thead>
 

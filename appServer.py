@@ -42,8 +42,10 @@ def addContact():
         phone    = request.form[ "phone" ]
         email    = request.form[ "email" ]
 
-        if validator.validatorForm( { fullName, phone, email } ) == False:
-            flash( "All info is required" )
+        res = validator.validatorForm( { fullName, phone, email } )
+
+        if res == False:
+            flash( "all info is required" )
             return redirect( url_for( "index" ) )
 
         if validator.emailValidator( email ) == False:
@@ -67,7 +69,7 @@ def addContact():
 def editContact( contactId ):
     
     cursor = dataBase.connection.cursor()
-    cursor.execute( "SELECT * FROM contacts WHERE id = %s",( contactId ) )
+    cursor.execute( "SELECT * FROM contacts WHERE id = {0}".format( contactId ) )
     response = cursor.fetchall()
 
     return render_template( "update.html", contact = response )
@@ -105,6 +107,7 @@ def deleteContact( id ):
     return redirect( url_for( "index" ) )
 
 ################################################################
+
 
 #---------------------------------------------
 
